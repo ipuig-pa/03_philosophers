@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:21:03 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/04 15:40:04 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:45:05 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 	t_env	env;
 
 	if (argc < 5 || argc > 6)
-		return (wirte(2, "Incorrect number of arguments\n", 31), 1);
+		return (write(2, "Incorrect number of arguments\n", 31), 1);
 	memset(&env, 0, sizeof(t_env));
 	env.num_philo = (int)get_value(argv[1]);
 	env.time_die = get_value(argv[2]);
@@ -27,13 +27,16 @@ int	main(int argc, char **argv)
 		env.x_eat = (int)get_value(argv[5]);
 	if (env.num_philo == -1 || env.time_die == -1 || env.time_eat == -1 \
 	|| env.time_sleep == -1 || env.x_eat == -1)
-		return (wirte(2, "Incorrect argument format\n", 26), 1);
+		return (write(2, "Incorrect argument format\n", 26), 1);
 	env.start_time = get_time_msec();
-	if (!initiate_mutex(&env, fork))
+	initiate_mutex(&env);
+	//fer els checks que toquin
+	//if (!initiate_mutex(&env))
 		//exit clean and return (1);
-	if (!create_philo_threads(&env, philo))
+	create_philo_threads(&env);
+	//if (!create_philo_threads(&env))
 		//exit clean and return (1);
-	join_philo_threads(&env, philo);
-	destroy_mutex(&env, fork);
+	join_philo_threads(&env);
+	destroy_mutex(&env);
 	return (0);
 }

@@ -6,24 +6,25 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/04 16:33:45 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:35:50 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.c"
+#include "philo.h"
 
 int	create_philo_threads(t_env *env)
 {
 	env->philo = (pthread_t *)malloc(env->num_philo * sizeof(pthread_t));
 	if (!env->philo)
 		return (0);
-	env->philo_id = 1;
-	while (env->philo_id <= env->num_philo)
+	env->philo_id = 0;
+	while (env->philo_id < env->num_philo)
 	{
-		pthread_create(&env->philo[i], NULL, &routine, env);
-		if (!env->philo[i])
-			//handle_error: free everything and exit clean
 		env->philo_id++;
+		pthread_create(&env->philo[env->philo_id - 1], NULL, &routine, env);
+		//if (!env->philo[env->philo_id - 1])
+			//handle_error: free everything and exit clean
+		//es considera que entren en race per agafar philo_id?!
 		usleep(50);
 	}
 	return (1);
@@ -42,7 +43,6 @@ void	join_philo_threads(t_env *env)
 			//handle_error: free everything and exit clean
 		i++;
 	}
-	//return (pthread_create(&philo, NULL, &routine, env));
 }
 
 int	initiate_mutex(t_env *env)
@@ -57,8 +57,6 @@ int	initiate_mutex(t_env *env)
 	{
 		pthread_mutex_init(&env->fork[i], NULL);
 		//no se si he de fer checking tambe aqui o no?
-		if (!env->fork[i])
-			//handle_error: free everything and exit clean
 		i++;
 	}
 	return (1);
@@ -73,9 +71,6 @@ void	destroy_mutex(t_env *env)
 	{
 		pthread_mutex_destroy(&env->fork[i]);
 		//no se si he de fer checking tambe aqui o no?
-		if (!env->fork[i])
-			//handle_error: free everything and exit clean
 		i++;
 	}
-	return (philo);
 }
