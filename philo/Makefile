@@ -11,10 +11,10 @@ OBJECTS = $(SOURCES:.c=.o)
 
 HEADER = philo.h
 
-all: NAME
+all: $(NAME)
 
-$(NAME):
-	cc $(CFLAGS) -pthread $(OBJECTS) -o $(NAME)
+$(NAME): $(OBJECTS)
+	cc $(CFLAGS) $(OBJECTS) -o $(NAME)
 
 %.o: %.c $(HEADER)
 	cc $(CFLAGS) -c $< -o $@
@@ -28,5 +28,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
-
