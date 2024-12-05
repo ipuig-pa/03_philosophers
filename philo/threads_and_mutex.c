@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/04 17:35:50 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/05 20:18:21 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	initiate_mutex(t_env *env)
 {
 	int	i;
 
-	env->fork = (pthread_mutex_t *)malloc(env->num_philo * sizeof(pthread_t));
+	env->fork = (pthread_mutex_t *)malloc(env->num_philo * sizeof(pthread_mutex_t));
 	if (!env->fork)
 		return (0);
 	i = 0;
