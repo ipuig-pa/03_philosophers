@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:02:50 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/04 17:48:23 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/05 21:08:13 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,20 @@ long long	ph_eat(t_env *env, int philo_id, long long last_meal)
 	long long	current_meal;
 
 	//problema si es queda bloquejat aqui perque esta ocupada la forquilla, pot morir aqui i que no me nenteri amb menys de 10ms!?!?
-	pthread_mutex_lock(&env->fork[philo_id - 1]);
 	if (philo_id != 1)
+	{
 		pthread_mutex_lock(&env->fork[philo_id - 2]);
-	else
+		printf("fork[%i] locked\n", philo_id - 2);
+	}
+	pthread_mutex_lock(&env->fork[philo_id - 1]);
+	printf("fork[%i] locked\n", philo_id - 1);
+	if (philo_id == 1)
+	{
 		pthread_mutex_lock(&env->fork[env->num_philo - 1]);
+		printf("fork[%i] locked\n", env->num_philo - 1);
+	}
+	// importancia de comprovar com estan els altres d'alguna manera, que no agafi aquest la forquilla abans que el 4
+	//print when it has taken just one or both forks??
 	printf("%lld %i has taken a fork\n", get_time_msec() - env->start_time, philo_id);
 	current_meal = get_time_msec() - env->start_time;
 	if ((current_meal - last_meal) >= env->time_die)
@@ -79,6 +88,7 @@ void	ph_sleep(t_env *env, int philo_id)
 void	ph_think(t_env *env, int philo_id)
 {
 	printf("%lld %i is thinking\n", get_time_msec() - env->start_time, philo_id);
+	usleep(100);
 }
 
 void	ph_die(t_env *env, int philo_id)

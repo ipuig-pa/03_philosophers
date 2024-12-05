@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/05 20:18:21 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/05 21:03:01 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int	create_philo_threads(t_env *env)
 	env->philo = (pthread_t *)malloc(env->num_philo * sizeof(pthread_t));
 	if (!env->philo)
 		return (0);
-	env->philo_id = 0;
+	env->philo_id = 1;
 	while (env->philo_id < env->num_philo)
 	{
-		env->philo_id++;
 		pthread_create(&env->philo[env->philo_id - 1], NULL, &routine, env);
 		//if (!env->philo[env->philo_id - 1])
 			//handle_error: free everything and exit clean
 		//es considera que entren en race per agafar philo_id?!
 		usleep(50);
+		env->philo_id++;
 	}
 	return (1);
 }
