@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:02:50 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/06 17:53:11 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:32:54 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	*routine(void *arg)
 	//quina es la millor manera de keep track of time after last_meal? crear un altre subthread que sigui el comptador de mort, que si arriba a x amb menjar a 0 mori?
 }
 
+//UN COP UN ESTA ESCRIT QUE MOR, QUE NO S'ESCRIGUI RES MES!!!
 //anar checking el temps que no es morin
 //prioritzar d'alguna manera els que fa mes que no mengen (si el temps entre l-ultim meal i lactual es mes gran que el de menjar, que comenci a demanar ja la forquilla!!!)
 
@@ -65,9 +66,17 @@ long long	eating(t_env *env, int philo_id)
 
 	if ((get_time_msec() - env->start_time - env->last_meal[philo_id - 1]) > env->time_die && !is_finished(env))
 		die(env, philo_id);
-	pthread_mutex_lock(&env->fork[philo_id - 1]);
-	printf("%lld %i has taken a fork\n", get_time_msec() - env->start_time, philo_id);
-	pthread_mutex_lock(&env->fork[philo_id % env->num_philo]);
+	//SEGUIR PER AQUI!!! posar aqui el thinking en lloc de a dalt segons el temps que quedi per morir???
+	if (!is_finished(env))
+		pthread_mutex_lock(&env->fork[philo_id - 1]);
+		printf("%lld %i has taken a fork\n", get_time_msec() - env->start_time, philo_id);
+	if (env->num_philo != 1)
+		pthread_mutex_lock(&env->fork[philo_id % env->num_philo]);
+	else 
+	{
+		usleep(env->time_die * 1000);
+		die(env, philo_id);
+	}
 	//print when it has taken just one or both forks??
 	current_meal = get_time_msec() - env->start_time;
 	if ((current_meal - env->last_meal[philo_id - 1]) > env->time_die && !is_finished(env))
