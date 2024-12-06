@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/05 21:03:01 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:13:30 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	create_philo_threads(t_env *env)
 	if (!env->philo)
 		return (0);
 	env->philo_id = 1;
-	while (env->philo_id < env->num_philo)
+	while (env->philo_id <= env->num_philo)
 	{
 		pthread_create(&env->philo[env->philo_id - 1], NULL, &routine, env);
 		//if (!env->philo[env->philo_id - 1])

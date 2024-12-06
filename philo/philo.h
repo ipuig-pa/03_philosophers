@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:55:44 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/04 17:16:36 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:50:56 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_env
 	int				philo_id;
 	int				fed_philo;
 	int				dead_philo;
+	long long		*last_meal;
 	pthread_mutex_t	*fork;
 	pthread_t		*philo;
 }	t_env;
@@ -43,10 +44,11 @@ void		destroy_mutex(t_env *env);
 
 //routine
 void		*routine(void *arg);
-long long	ph_eat(t_env *env, int philo_id, long long last_meal);
-void		ph_sleep(t_env *env, int philo_id);
-void		ph_think(t_env *env, int philo_id);
-void		ph_die(t_env *env, int philo_id);
+long long	eating(t_env *env, int philo_id);
+void		sleeping(t_env *env, int philo_id);
+void		thinking(t_env *env, int philo_id, long long time);
+void		die(t_env *env, int philo_id);
+int			is_finished(t_env *env);
 
 //helper
 long long	get_time_msec(void);
