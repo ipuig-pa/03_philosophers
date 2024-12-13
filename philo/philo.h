@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:55:44 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/06 17:50:56 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:43:03 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ long long	eating(t_env *env, int philo_id);
 void		sleeping(t_env *env, int philo_id);
 void		thinking(t_env *env, int philo_id, long long time);
 void		die(t_env *env, int philo_id);
-int			is_finished(t_env *env);
+int			is_finished(t_env *env, int philo_id);
 
 //helper
 long long	get_time_msec(void);
