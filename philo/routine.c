@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:02:50 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/14 14:02:49 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:25:37 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	*routine(void *arg)
 	update_last_meal(env, philo_id, env->start_time);
 	if (philo_id % 2 == 0) //&& x_feed == 0 && !is_finished(env)
 		thinking(env, philo_id, env->time_eat);
-	else if (philo_id == env->num_philo) //&& x_feed == 0 && !is_finished(env)
+	else if (philo_id == env->num_philo && philo_id != 1) //&& x_feed == 0 && !is_finished(env)
 		thinking(env, philo_id, 2 * env->time_eat);
 	while (!is_finished(env))
 	{
@@ -40,7 +40,7 @@ void	*routine(void *arg)
 		if (++x_feed == env->x_eat)
 			increase_fed_philo(env);
 		sleeping(env, philo_id);
-		thinking(env, philo_id, (float) 0.7 * (env->time_die - env->time_eat - env->time_sleep));
+		thinking(env, philo_id, (float) 0.5 * (env->time_die - env->time_eat - env->time_sleep));
 	}
 	return (NULL);
 }
@@ -52,6 +52,8 @@ void	eating(t_env *env, int philo_id)
 {
 	long long	current_meal;
 
+	if (get_time_msec() - get_last_meal(env, philo_id) > env->time_die)
+		die(env, philo_id);
 	pthread_mutex_lock(&env->fork[philo_id - 1]);
 	if (!is_finished(env))
 		printf("%lld %i has taken a fork\n", get_time_msec() - env->start_time, philo_id);
@@ -59,7 +61,7 @@ void	eating(t_env *env, int philo_id)
 		pthread_mutex_lock(&env->fork[philo_id % env->num_philo]);
 	else
 	{
-		usleep(env->time_die * 1000);
+		ft_usleep(env->time_die);
 		die(env, philo_id);
 	}
 	current_meal = get_time_msec() - env->start_time;
@@ -69,7 +71,7 @@ void	eating(t_env *env, int philo_id)
 	if (!is_finished(env))
 	{
 		printf("%lld %i is eating\n", current_meal, philo_id);
-		usleep(env->time_eat * 1000);
+		ft_usleep(env->time_eat);
 	}
 	pthread_mutex_unlock(&env->fork[philo_id - 1]);
 	pthread_mutex_unlock(&env->fork[philo_id % env->num_philo]);
@@ -81,19 +83,19 @@ void	sleeping(t_env *env, int philo_id)
 		printf("%lld %i is sleeping\n", get_time_msec() - env->start_time, philo_id);
 	if (env->time_die < env->time_sleep)
 	{
-		usleep(env->time_die * 1000);
+		ft_usleep(env->time_die);
 		die(env, philo_id);
 	}
 	else
-		usleep(env->time_sleep * 1000);
+		ft_usleep(env->time_sleep);
 }
 
 void	thinking(t_env *env, int philo_id, long long time)
 {
-	if (!is_finished(env))
+	if (!is_finished(env) && time != 0)
 	{
 		printf("%lld %i is thinking\n", get_time_msec() - env->start_time, philo_id);
-		usleep(time * 1000);
+		ft_usleep(time );
 	}
 }
 

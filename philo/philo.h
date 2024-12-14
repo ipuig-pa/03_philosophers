@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:55:44 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/14 13:58:30 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:18:05 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ long long	get_last_meal(t_env *env, int philo_id);
 //helper
 long long	get_time_msec(void);
 long long	get_value(char *str);
+int			ft_usleep(long long time);
 
 #endif

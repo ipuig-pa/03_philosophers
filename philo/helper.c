@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:31:53 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/04 17:42:57 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:19:13 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,14 @@ long long	get_value(char *str)
 	if (*str != '\0')
 		return (-1);
 	return (value);
+}
+
+int	ft_usleep(long long time)
+{
+	long long	start;
+
+	start = get_time_msec();
+	while ((get_time_msec() - start) < (time))
+		usleep(500);
+	return (0);
 }
