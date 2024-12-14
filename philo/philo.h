@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:55:44 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/13 17:43:03 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/14 13:58:30 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ typedef struct s_env
 	long long		time_eat;
 	long long		time_sleep;
 	int				x_eat;
+	pthread_mutex_t	philo_id_mutex;
 	int				philo_id;
+	pthread_mutex_t	status_mutex;
 	int				fed_philo;
 	int				dead_philo;
+	pthread_mutex_t	*last_meal_mutex;
 	long long		*last_meal;
 	pthread_mutex_t	*fork;
 	pthread_t		*philo;
@@ -44,11 +47,14 @@ void		destroy_mutex(t_env *env);
 
 //routine
 void		*routine(void *arg);
-long long	eating(t_env *env, int philo_id);
+void		eating(t_env *env, int philo_id);
 void		sleeping(t_env *env, int philo_id);
 void		thinking(t_env *env, int philo_id, long long time);
 void		die(t_env *env, int philo_id);
-int			is_finished(t_env *env, int philo_id);
+int			is_finished(t_env *env);
+void		increase_fed_philo(t_env *env);
+void		update_last_meal(t_env *env, int philo_id, long long time);
+long long	get_last_meal(t_env *env, int philo_id);
 
 //helper
 long long	get_time_msec(void);

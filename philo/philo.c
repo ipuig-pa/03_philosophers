@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:21:03 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/13 17:07:14 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/14 14:01:37 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int argc, char **argv)
 	if (env.num_philo == -1 || env.time_die == -1 || env.time_eat == -1 \
 	|| env.time_sleep == -1 || env.x_eat == -1)
 		return (write(2, "Incorrect argument format\n", 26), 1);
-	env.start_time = get_time_msec();
 	env.last_meal = (long long *)malloc(env.num_philo * sizeof(long long));
 	if (!env.last_meal)
 		return (1);
@@ -36,6 +35,7 @@ int	main(int argc, char **argv)
 	//fer els checks que toquin
 	//if (!initiate_mutex(&env))
 		//exit clean and return (1);
+	env.start_time = get_time_msec();
 	create_philo_threads(&env);
 	//if (!create_philo_threads(&env))
 		//exit clean and return (1);

@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/06 16:13:30 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/14 14:01:29 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,17 @@ int	initiate_mutex(t_env *env)
 		//no se si he de fer checking tambe aqui o no?
 		i++;
 	}
+	env->last_meal_mutex = (pthread_mutex_t *)malloc(env->num_philo * sizeof(pthread_mutex_t));
+	if (!env->last_meal_mutex)
+		return (0);
+	i = 0;
+	while (i < env->num_philo)
+	{
+		pthread_mutex_init(&env->last_meal_mutex[i], NULL);
+		//no se si he de fer checking tambe aqui o no?
+		i++;
+	}
+	pthread_mutex_init(&env->status_mutex, NULL);
 	return (1);
 }
 
@@ -73,4 +84,12 @@ void	destroy_mutex(t_env *env)
 		//no se si he de fer checking tambe aqui o no?
 		i++;
 	}
+	i = 0;
+	while (i < env->num_philo)
+	{
+		pthread_mutex_destroy(&env->last_meal_mutex[i]);
+		//no se si he de fer checking tambe aqui o no?
+		i++;
+	}
+	pthread_mutex_destroy(&env->status_mutex);
 }
