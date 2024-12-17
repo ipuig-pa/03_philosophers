@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helper.c                                           :+:      :+:    :+:   */
+/*   manage_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/04 10:31:53 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/16 11:48:57 by ipuig-pa         ###   ########.fr       */
+/*   Created: 2024/12/17 15:23:06 by ipuig-pa          #+#    #+#             */
+/*   Updated: 2024/12/17 15:52:25 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_time_msec(void)
+void	init_env(t_env *env, int argc, char **argv)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	env->num_philo = (int)get_valid_value(argv[1]);
+	env->time_die = get_valid_value(argv[2]);
+	env->time_eat = get_valid_value(argv[3]);
+	env->time_sleep = get_valid_value(argv[4]);
+	if (argc == 6)
+		env->x_eat = (int)get_valid_value(argv[5]);
 }
 
-long long	get_value(char *str)
+int	get_valid_value(char *str)
 {
-	long long	value;
+	int	value;
 
 	value = 0;
-	//no se si es necessari aquesta part de treure espais de davant i de darrere
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
 	while (*str >= '0' && *str <= '9')
@@ -33,20 +34,18 @@ long long	get_value(char *str)
 		value = value * 10 + (*str - '0');
 		str++;
 	}
-	//no se si es necessari aquesta part de treure espais de davant i de darrere
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
-	if (*str != '\0')
-		return (-1);
+	if (*str != '\0' || value == 0)
+		return (0);
 	return (value);
 }
 
-int	ft_msleep(long long time)
+void	final_free(t_env *env)
 {
-	long long	start;
-
-	start = get_time_msec();
-	while (get_time_msec() - start >= time)
-		usleep(500);
-	return (0);
+	if (env->philo)
+		free(env->philo);
+	if (env->last_meal)
+		free(env->last_meal);
+	destroy_mutex(env);
 }

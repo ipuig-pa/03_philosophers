@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/16 11:31:42 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:10:24 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int	create_philo_threads(t_env *env)
 	int		philo_id;
 	t_philo	*philo;
 
-	pthread_create(&env->monitor, NULL, &monitor, env);
+	env->start_time = get_time_msec();
+	if (pthread_create(&env->monitor, NULL, &monitor, env) != 0)
+		return (final_free(env), 0);
 	env->philo = (pthread_t *)malloc(env->num_philo * sizeof(pthread_t));
 	if (!env->philo)
 		return (0);
@@ -29,31 +31,27 @@ int	create_philo_threads(t_env *env)
 			return (0);
 		philo->id = philo_id;
 		philo->env = env;
-		update_last_meal(env, philo->id, env->start_time);
-		pthread_create(&env->philo[philo_id - 1], NULL, &routine, philo);
-		//if (!env->philo[env->philo_id - 1])
-			//handle_error: free everything and exit clean
-		//es considera que entren en race per agafar philo_id?!
+		if (pthread_create(&env->philo[philo_id - 1], NULL, &routine, philo) != 0)
+			return (final_free(env), 0);
 		philo_id++;
 	}
-	join_philo_threads(env);
 	return (1);
 }
 
-void	join_philo_threads(t_env *env)
+int	join_philo_threads(t_env *env)
 {
 	int	i;
 
 	i = 0;
-	pthread_join(env->monitor, NULL);
+	if (pthread_join(env->monitor, NULL) != 0)
+		return (final_free(env), 0);
 	while (i < env->num_philo)
 	{
-		pthread_join(env->philo[i], NULL);
-		//no se si aqui tambe he de mantenir el check o no. que retorna el join?
-		if (!env->philo[i])
-			//handle_error: free everything and exit clean
+		if (pthread_join(env->philo[i], NULL))
+			return (final_free(env), 0);
 		i++;
 	}
+	return (1);
 }
 
 int	initiate_mutex(t_env *env)
@@ -66,8 +64,8 @@ int	initiate_mutex(t_env *env)
 	i = 0;
 	while (i < env->num_philo)
 	{
-		pthread_mutex_init(&env->fork[i], NULL);
-		//no se si he de fer checking tambe aqui o no?
+		if (pthread_mutex_init(&env->fork[i], NULL) != 0)
+			return (final_free(env), 0);
 		i++;
 	}
 	env->last_meal_mutex = (pthread_mutex_t *)malloc(env->num_philo * sizeof(pthread_mutex_t));
@@ -76,11 +74,12 @@ int	initiate_mutex(t_env *env)
 	i = 0;
 	while (i < env->num_philo)
 	{
-		pthread_mutex_init(&env->last_meal_mutex[i], NULL);
-		//no se si he de fer checking tambe aqui o no?
+		if (pthread_mutex_init(&env->last_meal_mutex[i], NULL) != 0)
+			return (final_free(env), 0);
 		i++;
 	}
-	pthread_mutex_init(&env->status_mutex, NULL);
+	if (pthread_mutex_init(&env->status_mutex, NULL) != 0)
+		return (final_free(env), 0);
 	return (1);
 }
 
@@ -88,19 +87,19 @@ void	destroy_mutex(t_env *env)
 {
 	int	i;
 
-	i = 0;
-	while (i < env->num_philo)
+	if (env->fork)
 	{
-		pthread_mutex_destroy(&env->fork[i]);
-		//no se si he de fer checking tambe aqui o no?
-		i++;
+		i = 0;
+		while (i++ < env->num_philo)
+			pthread_mutex_destroy(&env->fork[i - 1]);
+		free(env->fork);
 	}
-	i = 0;
-	while (i < env->num_philo)
+	if (env->last_meal_mutex)
 	{
-		pthread_mutex_destroy(&env->last_meal_mutex[i]);
-		//no se si he de fer checking tambe aqui o no?
-		i++;
+		i = 0;
+		while (i++ < env->num_philo)
+			pthread_mutex_destroy(&env->last_meal_mutex[i - 1]);
+		free(env->last_meal_mutex);
 	}
 	pthread_mutex_destroy(&env->status_mutex);
 }

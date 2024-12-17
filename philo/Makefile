@@ -3,10 +3,12 @@ NAME = philo
 CFLAGS = -Wall -Wextra -Werror -pthread
 
 SOURCES =	philo.c \
+			manage_env.c \
 			threads_and_mutex.c \
+			monitor.c \
 			routine.c \
-			helper.c \
-			monitor.c
+			time.c \
+			meals.c
 
 OBJECTS = $(SOURCES:.c=.o)
 
