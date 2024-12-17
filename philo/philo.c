@@ -6,11 +6,16 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:21:03 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/17 16:09:38 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:49:29 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+// void	leaks(void)
+// {
+// 	system("leaks philo");
+// } atexit(leaks);
 
 int	main(int argc, char **argv)
 {
