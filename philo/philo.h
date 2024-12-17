@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:55:44 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/17 16:07:20 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:40:00 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_philo
 	t_env	*env;
 }	t_philo;
 
-
 //threads and mutex
 int			create_philo_threads(t_env *env);
 int			join_philo_threads(t_env *env);
@@ -58,9 +57,10 @@ void		final_free(t_env *env);
 
 //routine
 void		*routine(void *arg);
-void		eating(t_env *env, int philo_id);
-void		sleeping(t_env *env, int philo_id);
-void		thinking(t_env *env, int philo_id, int time);
+void		eating_alone(t_philo *philo);
+void		eating(t_philo *philo);
+void		sleeping(t_philo *philo);
+void		thinking(t_philo *philo, int time);
 
 //meals
 void		increase_fed_philo(t_env *env);

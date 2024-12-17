@@ -6,12 +6,11 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 15:26:19 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/17 16:12:13 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:39:47 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void	increase_fed_philo(t_env *env)
 {

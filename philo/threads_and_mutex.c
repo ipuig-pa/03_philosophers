@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/17 16:10:24 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:41:41 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	create_philo_threads(t_env *env)
 			return (0);
 		philo->id = philo_id;
 		philo->env = env;
-		if (pthread_create(&env->philo[philo_id - 1], NULL, &routine, philo) != 0)
+		if (pthread_create(&env->philo[philo_id - 1], \
+												NULL, &routine, philo) != 0)
 			return (final_free(env), 0);
 		philo_id++;
 	}
@@ -58,25 +59,25 @@ int	initiate_mutex(t_env *env)
 {
 	int	i;
 
-	env->fork = (pthread_mutex_t *)malloc(env->num_philo * sizeof(pthread_mutex_t));
+	env->fork = (pthread_mutex_t *) \
+			malloc(env->num_philo * sizeof(pthread_mutex_t));
 	if (!env->fork)
 		return (0);
 	i = 0;
-	while (i < env->num_philo)
+	while (i++ < env->num_philo)
 	{
-		if (pthread_mutex_init(&env->fork[i], NULL) != 0)
+		if (pthread_mutex_init(&env->fork[i - 1], NULL) != 0)
 			return (final_free(env), 0);
-		i++;
 	}
-	env->last_meal_mutex = (pthread_mutex_t *)malloc(env->num_philo * sizeof(pthread_mutex_t));
+	env->last_meal_mutex = (pthread_mutex_t *) \
+			malloc(env->num_philo * sizeof(pthread_mutex_t));
 	if (!env->last_meal_mutex)
 		return (0);
 	i = 0;
-	while (i < env->num_philo)
+	while (i++ < env->num_philo)
 	{
-		if (pthread_mutex_init(&env->last_meal_mutex[i], NULL) != 0)
+		if (pthread_mutex_init(&env->last_meal_mutex[i - 1], NULL) != 0)
 			return (final_free(env), 0);
-		i++;
 	}
 	if (pthread_mutex_init(&env->status_mutex, NULL) != 0)
 		return (final_free(env), 0);
