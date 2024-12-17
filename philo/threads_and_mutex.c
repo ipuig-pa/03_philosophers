@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:04:10 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/14 14:01:29 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:31:42 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,29 @@
 
 int	create_philo_threads(t_env *env)
 {
+	int		philo_id;
+	t_philo	*philo;
+
+	pthread_create(&env->monitor, NULL, &monitor, env);
 	env->philo = (pthread_t *)malloc(env->num_philo * sizeof(pthread_t));
 	if (!env->philo)
 		return (0);
-	env->philo_id = 1;
-	while (env->philo_id <= env->num_philo)
+	philo_id = 1;
+	while (philo_id <= env->num_philo)
 	{
-		pthread_create(&env->philo[env->philo_id - 1], NULL, &routine, env);
+		philo = (t_philo *)malloc(sizeof(t_philo));
+		if (!philo)
+			return (0);
+		philo->id = philo_id;
+		philo->env = env;
+		update_last_meal(env, philo->id, env->start_time);
+		pthread_create(&env->philo[philo_id - 1], NULL, &routine, philo);
 		//if (!env->philo[env->philo_id - 1])
 			//handle_error: free everything and exit clean
 		//es considera que entren en race per agafar philo_id?!
-		usleep(50);
-		env->philo_id++;
+		philo_id++;
 	}
+	join_philo_threads(env);
 	return (1);
 }
 
@@ -35,6 +45,7 @@ void	join_philo_threads(t_env *env)
 	int	i;
 
 	i = 0;
+	pthread_join(env->monitor, NULL);
 	while (i < env->num_philo)
 	{
 		pthread_join(env->philo[i], NULL);

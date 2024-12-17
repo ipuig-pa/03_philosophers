@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:55:44 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/14 17:18:05 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:42:45 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,22 @@ typedef struct s_env
 	long long		time_eat;
 	long long		time_sleep;
 	int				x_eat;
-	pthread_mutex_t	philo_id_mutex;
-	int				philo_id;
 	pthread_mutex_t	status_mutex;
 	int				fed_philo;
 	int				dead_philo;
 	pthread_mutex_t	*last_meal_mutex;
 	long long		*last_meal;
 	pthread_mutex_t	*fork;
+	pthread_t		monitor;
 	pthread_t		*philo;
 }	t_env;
+
+typedef struct s_philo
+{
+	int		id;
+	t_env	*env;
+}	t_philo;
+
 
 //threads and mutex
 int			create_philo_threads(t_env *env);
@@ -56,9 +62,13 @@ void		increase_fed_philo(t_env *env);
 void		update_last_meal(t_env *env, int philo_id, long long time);
 long long	get_last_meal(t_env *env, int philo_id);
 
+//monitor
+void		*monitor(void *arg);
+void		check_deaths(t_env *env);
+
 //helper
 long long	get_time_msec(void);
 long long	get_value(char *str);
-int			ft_usleep(long long time);
+int			ft_msleep(long long time);
 
 #endif

@@ -5,7 +5,8 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 SOURCES =	philo.c \
 			threads_and_mutex.c \
 			routine.c \
-			helper.c
+			helper.c \
+			monitor.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

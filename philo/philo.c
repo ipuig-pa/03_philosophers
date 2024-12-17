@@ -6,7 +6,7 @@
 /*   By: ipuig-pa <ipuig-pa@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:21:03 by ipuig-pa          #+#    #+#             */
-/*   Updated: 2024/12/14 14:01:37 by ipuig-pa         ###   ########.fr       */
+/*   Updated: 2024/12/16 10:44:06 by ipuig-pa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv)
 	create_philo_threads(&env);
 	//if (!create_philo_threads(&env))
 		//exit clean and return (1);
-	join_philo_threads(&env);
+	//join_philo_threads(&env);
 	destroy_mutex(&env);
 	return (0);
 }
